@@ -9,7 +9,7 @@ from numpy import random
 class Population:
     def __init__(self, SIZE, problem) -> None:
        self.SIZE = SIZE
-       self.individuals = []
+       self.individuals = []    
        self.fitnessFunction = problem.fitnessFunction
        self.limits = problem.limits
        self.constraints = problem.constraints
@@ -17,20 +17,20 @@ class Population:
        for x in range(SIZE):
            values = []
            for i in range(problem.dimension):
-               values.append(random.uniform(problem.limits[i][0],problem.limits[i][0]))
+               values.append(random.uniform(problem.limits[i][0],problem.limits[i][1]))
            self.individuals.append(Individual(values, problem.fitnessFunction(values)))
 
     def selection(self):    
-        pass
+        self.individuals.sort(key=lambda x: x.score)
     
     def listPopulation(self):
         for individual in self.individuals:
-            print(individual.position)
+            print(individual.score)
 
 
 from numpy import square
 class Problem:
-    def __init__(self, dimension) -> None:
+    def __init__(self, dimension=2) -> None:
         self.dimension = dimension
         self.limits = []
         for i in range(dimension):
@@ -42,5 +42,8 @@ class Problem:
     def constraints(self, values):
         return None
 
-problema = Problem(4)
-print(problema.fitnessFunction([2.0,1.0,4.0,3.0]))
+problema = Problem()
+poblacion = Population(10,problema)
+poblacion.listPopulation()
+poblacion.selection()
+poblacion.listPopulation()
